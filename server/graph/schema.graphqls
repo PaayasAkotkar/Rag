@@ -1,0 +1,74 @@
+# type Message {
+#   id: ID
+#   text: String
+# }
+
+# input ClientRequestInput {
+#   id: ID
+#   text: String
+# }
+
+# type AIReply {
+#   text: String
+# }
+
+# type AIRequestPayload {
+#   status: Int
+#   message: String
+# }
+input ChessStudentRequest {
+  id: ID
+  name: String
+  query: String
+}
+
+type ChessCoachMiscEntry {
+  key: String
+  value: ChessCoachMiscItem
+}
+
+type ChessCoachMiscItem {
+  title: String
+  desc:String
+  canCopy: Boolean 
+  isLink: Boolean
+  link:String
+  copy:String
+}
+
+type ChessCoachReply {
+  year: String
+  title: String
+  desc: String
+  outro: String
+  link: [ChessCoachMiscEntry]
+  copyItems: [ChessCoachMiscEntry]
+  miscItems: [ChessCoachMiscEntry]
+}
+
+type OnChessCoachReply {
+  information: ChessCoachReply
+  suggestion: ChessCoachReply
+  bestPractice: ChessCoachReply
+  miscItems: [ChessCoachMiscEntry]
+}
+
+type ChessCoachPayload {
+  status: Int
+  message: String
+}
+
+type Query {
+  # initChats(input: ClientRequestInput): [AIReply]
+  initCoachSuggestions(input:ChessStudentRequest):[OnChessCoachReply]
+}
+
+type Mutation {
+  # aiRequest(input: ClientRequestInput): AIRequestPayload
+  askChessCoach(input: ChessStudentRequest): ChessCoachPayload
+}
+
+type Subscription {
+  # onAIReply(input: ClientRequestInput): AIReply
+  chessCoachReply(input: ChessStudentRequest): OnChessCoachReply
+}

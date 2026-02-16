@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  /* --background: #29BBF0;
+  */
+  --background: #262618;
+
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme {
+  /* font size */
+  --text-default: 48px;
+
+  --text-medium: 55px;
+
+  --text-large: 63px;
+
+  --text-small: 35px;
+
+  --text-nyg-large: 350px;
+  /* end */
+
+  /* color-pallete */
+
+  /* blue */
+
+  --color-blue1: #29AAF0;
+
+  --color-blue2: #CEEEFA;
+
+  --color-blue3: #29BBF0;
+
+  --color-blue4: #163845;
+
+  --color-blue5: #AAE1F5;
+
+  --color-blue6: #2993F0;
+
+  --color-blue7: #08232D;
+
+  --color-blue8: #74C9F5;
+
+  --color-blue9: #4285F4;
+
+  --color-blue10: #247ECF;
+
+  /* end */
+
+  /* voilet */
+
+  --color-voilet1: #D0CEFA;
+
+  --color-voilet2: #7456F0;
+
+  --color-voilet3: #3E3244;
+
+  --color-voilet4: #2A2734;
+
+  --color-voilet5: #6A93FB;
+
+  --color-voilet6: #0D00FF;
+
+  /* end */
+
+  /* yellow */
+
+  --color-yellow1: #F0EFD9;
+
+  --color-yellow2: #FFF5B6;
+
+  --color-yellow3: #F0C756;
+
+  --color-yellow4: #F0A429;
+
+
+  /* end */
+
+  /* black */
+
+  --color-black1: #252525;
+
+  --color-black2: #3F3F3F;
+
+  --color-black3: #2F2F2F;
+
+  --color-black4: #323F44;
+
+  --color-black5: #273134;
+
+  /* end */
+
+  --color-red1: #F02940;
+
+  /* green */
+
+  --color-green1: #ADF5AA;
+
+  --color-green2: #29F09D;
+
+  --color-green3: #29F083;
+
+  --color-green4: #DFCE0B;
+
+  --color-green5: #D9F3B1;
+
+  --color-green6: #A5D6A7;
+
+  /* end */
+
+  /* pink */
+
+  --color-pink1: #F029E3;
+
+  --color-pink2: #D856F0;
+
+  --color-pink3: #B7026C;
+
+  /* end  */
+
+  /* orange */
+
+  --color-orange1: #F06529;
+
+  --color-orange2: #FC8F48;
+
+  --color-orange3: #FFB200;
+
+  /* end */
+
+  /* white */
+
+  --color-white1: #F6F6F6;
+
+  --color-white2: #EFEFEF;
+
+  --color-white3: #F9F9F9;
+
+  --color-white4: #FFFFFF;
+
+  --color-white5: #F1F3F4;
+
+  /* end */
+
+  /* end */
+
+  /* misc */
+  --radius-default: 50px;
+  --radius-double: 150px
+    /* end */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
