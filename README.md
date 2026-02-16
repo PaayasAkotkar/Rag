@@ -1,6 +1,7 @@
 # project: RAG Model - Chess Coaching System
 # date: Feb-10-2026 - Feb-16-2026
 
+<<<<<<< HEAD
 A full-stack application combining AI-powered Retrieval Augmented Generation.The system provides an interactive chess coaching platform with real-time puzzle generation, analysis.
 
 ## Motivation
@@ -141,3 +142,9 @@ mkdir -p chess/chess_puzzles
 **Last Updated**: February 16, 2026
 **Version**: 0.1.0
 **Status**: Active Development
+=======
+index:
+      1. rag -frontend-folder
+      2. server -backend-folder-chess-coach-rag-model
+      3. chess -backend-folder-chess-puzzle-model
+>>>>>>> 95af60d6aeb9994df0b90676aadb8f164cf9ee21
