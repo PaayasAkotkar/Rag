@@ -5,6 +5,3 @@ index:
       1. rag -frontend-folder
       2. server -backend-folder-chess-coach-rag-model
       3. chess -backend-folder-chess-puzzle-model
-
-# Rag
-     <p> the rag folder is frontend that deliver</p>
