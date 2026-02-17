@@ -1,31 +1,29 @@
 import { useState, useCallback } from 'react'
 
-interface UseCopyOptions {
+interface input {
     timeout?: number
     onSuccess?: () => void
     onError?: (error: Error) => void
 }
 
-interface UseCopyReturn {
+interface output {
     isCopied: boolean
     copy: (text: string) => Promise<void>
     reset: () => void
     error: Error | null
 }
-
-export function useCopy(options: UseCopyOptions = {}): UseCopyReturn {
-    const { timeout = 2000, onSuccess, onError } = options
+// useCopy is a custom hook that provides copy to clipboard functionality
+export function useCopy(options: input = {}): output {
+    const { timeout = 1000, onSuccess, onError } = options
 
     const [isCopied, setIsCopied] = useState(false)
     const [error, setError] = useState<Error | null>(null)
 
     const copy = useCallback(
         async (text: string) => {
-            // Reset error state
             setError(null)
 
             try {
-                // Modern clipboard API
                 if (navigator.clipboard && window.isSecureContext) {
                     await navigator.clipboard.writeText(text)
                 }

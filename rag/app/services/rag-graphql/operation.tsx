@@ -24,8 +24,6 @@ export interface ChessCoachReply {
 }
 
 
-
-
 export const ChessStudent_REQUEST = gql`
   mutation askChessCoach($input: ChessStudentRequest) {
     askChessCoach(input: $input) {
@@ -34,8 +32,6 @@ export const ChessStudent_REQUEST = gql`
     }
   }
 `;
-
-
 
 
 export interface ChessStudentRequest {
@@ -64,9 +60,7 @@ export interface ChessCoachPayload {
   status: number
   message: string
 }
-// ----------------------------
-// Update INIT_CHESS_SUGESSTION
-// ----------------------------
+
 export const INIT_CHESS_SUGESSTION = gql`
   query  initCoachSuggestions($input: ChessStudentRequest) {
      initCoachSuggestions(input: $input) {
@@ -136,9 +130,7 @@ export const INIT_CHESS_SUGESSTION = gql`
   }
 `;
 
-// ----------------------------
-// Update ON_ChessCoach_REPLY
-// ----------------------------
+
 export const ON_ChessCoach_REPLY = gql`
   subscription chessCoachReply($input: ChessStudentRequest) {
     chessCoachReply(input: $input) {

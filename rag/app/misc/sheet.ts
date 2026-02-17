@@ -1,3 +1,9 @@
+// this is created to handle the responsive design
+// respMin: minimum zoom
+// respMax: maximum zoom
+// respZoom: default zoom
+// respBaseWidth: base width
+// respBaseHeight: base height
 export const respMin = 0.5
 export const respMax = 1.5
 export const respZoom = 2.1

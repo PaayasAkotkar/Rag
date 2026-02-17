@@ -6,7 +6,7 @@ import { useRag, useRagSubscription } from "@/app/services/rag-graphql/rag-graph
 import NoteBook from "@/app/ui/note-book/note-book";
 import TextArea from "@/app/ui/text-area/text-area";
 import { useEffect, useState } from "react";
-
+// Chat returns the chat system with ai
 export default function Chat() {
     let $name = "leoDaCarYellow"
     let $id = "xxx222"

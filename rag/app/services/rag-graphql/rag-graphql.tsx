@@ -1,14 +1,13 @@
 "use client";
 import { useMutation, useSubscription } from "@apollo/client/react";
 import { ChessCoachPayload, ChessStudent_REQUEST, ChessStudentRequest, ON_ChessCoach_REPLY, OnChessCoachReply } from "./operation";
+
+// useRag is a custom hook that provides graphql rag functionality
 export function useRag() {
-  // Mutation to send AI request
   const [askChessCoachMutation, { loading: mutationLoading, error: mutationError }] = useMutation<
     { askChessCoach: ChessCoachPayload },
     { input: ChessStudentRequest }
   >(ChessStudent_REQUEST);
-
-  // Function to send AI request
   const askAi = async (input: ChessStudentRequest) => {
     try {
       const result = await askChessCoachMutation({ variables: { input } });
@@ -20,10 +19,8 @@ export function useRag() {
     }
   };
 
-  // Function to subscribe to AI replies
   const subscribeToReplies = (
     input: ChessStudentRequest,
-    onData: (data: ChessCoachPayload) => void
   ) => {
     console.log("Starting subscription for room:", input.id);
     return null;
@@ -37,13 +34,14 @@ export function useRag() {
   };
 }
 
-// Separate hook for subscription
+// useRagSubscription is a custom hook that provides graphql rag real-time update functionality
 export function useRagSubscription(input: ChessStudentRequest) {
   const { data, loading, error } = useSubscription<
     { chessCoachReply: OnChessCoachReply },
     { input: ChessStudentRequest }
   >(ON_ChessCoach_REPLY, {
     variables: { input },
+
     onData: ({ data }) => {
       console.log("Subscription data received:", data);
     },

@@ -10,6 +10,7 @@ import EditTextArea from "../edit-text/edit-text"
 import RainbowPostComposorButton from "../buttons/post-composor-buttons/rainbow-post-composor-button/rainbow-post-composor-button"
 import SquarePostComposorButton from "../buttons/post-composor-buttons/square-post-composor-button/square-post-composor-button"
 import { makeSmallChange } from "@/app/misc/types"
+import { respBaseWidth, respMax, respMin, respZoom } from "@/app/misc/sheet"
 
 interface input {
     query: string,
@@ -40,11 +41,11 @@ export default function MessageBubble({
     const _w = mcs.width ?? device.isPcLandscape ? 900 : device.isMobilePortrait ? 200 : 300
     const f = mcs.fontSize ?? device.isPcLandscape ? 43 : device.isMobilePortrait ? 30 : 20
 
-    const w = CSSMaths.GenerateClamp(_w, 1920, 0.90, 'vw', counterScale, 0.65, 1.5)
+    const w = CSSMaths.GenerateClamp(_w, respBaseWidth, respZoom, 'vw', counterScale, respMin, respMax)
 
-    const _fontSize = CSSMaths.GenerateClamp(f, 1920, 0.90, 'px', counterScale, 0.70, 1.3)
+    const _fontSize = CSSMaths.GenerateClamp(f, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
 
-    const rounded = CSSMaths.GenerateClamp(10, 1920, 0.90, 'px', counterScale, 0.65, 1.5)
+    const rounded = CSSMaths.GenerateClamp(10, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
 
     const textColor = makeSmallChange?.textColor ?? 'black'
 

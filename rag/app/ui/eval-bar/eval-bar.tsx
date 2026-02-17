@@ -21,7 +21,7 @@ export default function EvalBar({ evvalScore, makeSmallChanges, whiteTheme, blac
 
     // formula link: https://lichess.org/@/jk_182/blog/expected-score-of-grandmasters-based-on-evaluation/GB9sX2ab
     useEffect(() => {
-        const k = 0.00368208 // Adjusted constant for better scaling
+        const k = 0.007545
         const rawPercentage = 50 + 50 * (2 / (1 + Math.exp(-k * evvalScore)) - 1)
         const clampedPercentage = Math.max(0, Math.min(100, rawPercentage))
         setWinPerc(clampedPercentage)
@@ -35,12 +35,9 @@ export default function EvalBar({ evvalScore, makeSmallChanges, whiteTheme, blac
     const _h = makeSmallChanges?.height ?? (device.isPcLandscape ? 800 : device.isMobilePortrait ? 500 : 550)
     const _f = makeSmallChanges?.height ?? (device.isPcLandscape ? 70 : device.isMobilePortrait ? 60 : 65)
 
-
     const w = CSSMaths.GenerateClamp(_w, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
     const h = CSSMaths.GenerateClamp(_h, respBaseHeight, respZoom, 'vh', counterScale, respMin, respMax)
     const f = CSSMaths.GenerateClamp(_f, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
-
-
 
     const _whiteTheme = whiteTheme ?? colorPallete.$voilet_pallete.voilet1
     const _blackTheme = blackTheme ?? colorPallete.$yellow_palletes.yellow8

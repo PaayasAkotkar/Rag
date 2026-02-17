@@ -2,10 +2,12 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from 'graphql-ws';
 import { HttpLink, InMemoryCache } from '@apollo/client/core';
 import { getMainDefinition } from "@apollo/client/utilities";
-import { Kind, OperationTypeNode } from "graphql";
+import { DocumentNode, Kind, OperationTypeNode } from "graphql";
 import { ApolloLink } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 
+// this is by far the cleanest aproach you can create than messy stuff
+// inspired from angular apollo writing style
 // env
 const chessPuzzleHTTP = 'http://localhost:8080/chess-puzzles'
 const chessPuzzleWS = 'ws://localhost:8080/chess-puzzles'
@@ -22,7 +24,7 @@ const gqlRagClient = new GraphQLWsLink(createClient({ url: ragWS }))
 // end
 
 // link
-const chessPuzzleLink = ApolloLink.split(({ query }) => {
+const chessPuzzleLink = ApolloLink.split(({ query }: { query: DocumentNode }) => {
 
     const def = getMainDefinition(query)
     return def.kind === Kind.OPERATION_DEFINITION &&
@@ -31,7 +33,7 @@ const chessPuzzleLink = ApolloLink.split(({ query }) => {
     gqlChessPuzzleClient,
     httpChessPuzzleClient)
 
-const ragLink = ApolloLink.split(({ query }) => {
+const ragLink = ApolloLink.split(({ query }: { query: DocumentNode }) => {
 
     const def = getMainDefinition(query)
     return def.kind === Kind.OPERATION_DEFINITION &&
