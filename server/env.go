@@ -1,8 +1,8 @@
 package server
 
 const (
-	ENV   = "AIzaSyBo0kqcdZd-Px4ObgLIOVDJkWO-SaRAF8U"
-	MODEL = "googleai/gemini-2.5-flash"
+	ENV   = "" // your api key
+	MODEL = "googleai/gemini-2.5-flash" // or anyother model
 )
 
 var (
