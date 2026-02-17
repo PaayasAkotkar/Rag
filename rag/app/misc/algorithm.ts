@@ -1,3 +1,4 @@
+// copyright 2025
 // afterColonJson removes the parse value from the prefix and returns in given interface
 export function afterColonJson(token: string | undefined, parse: string, _interface: any) {
     if (token) {
