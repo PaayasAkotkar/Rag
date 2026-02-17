@@ -5,9 +5,14 @@ export type pallete<T extends string> = {
     [K in `${T}${number}`]: `#${string}`;
 };
 
-export type motionDefaultProps<T extends HTMLElement> = HTMLMotionProps<any> & React.HTMLAttributes<T>;
+// motionDefaultPros and defaultProps acts same that handles the node props 
+// meaning passing the onClick and all those abilities
 
-export type defaultProps<T extends HTMLElement> = React.HTMLAttributes<T>;
+export type motionDefaultProps<T extends HTMLElement> =
+    HTMLMotionProps<any> & React.HTMLAttributes<T>;
+
+export type defaultProps<T extends HTMLElement> =
+    React.HTMLAttributes<T>;
 
 
 export interface makeSmallChange {
@@ -25,11 +30,4 @@ export interface makeSmallChange {
     btnTextColor?: string
 
     triColor?: { right: string, left: string, mid: string }
-}
-export interface responsiveLayout {
-    max: number
-    min: number
-    baseZoom: number
-    baseDimension: number
-    unit: string
 }

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
+// useDevice is a custom hook that provides device information
+// this is dope trust me
 export function useDevice() {
     const [device, setDevice] = useState({
         isMobile: false,
@@ -22,12 +24,19 @@ export function useDevice() {
             if (typeof window === 'undefined') return;
 
             const userAgent = navigator.userAgent;
+
+            // ai generated
             const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
             const tabletRegex = /iPad|Android(?!.*Mobile)|Tablet/i;
+            // end
 
             const isMobileDevice = mobileRegex.test(userAgent) && !tabletRegex.test(userAgent);
             const isTabletDevice = tabletRegex.test(userAgent);
+
+            // ai generated
             const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+            // end
+
             const landscape = window.innerWidth > window.innerHeight;
             const isDesktopDevice = !isMobileDevice && !isTabletDevice && !isTouchDevice;
 

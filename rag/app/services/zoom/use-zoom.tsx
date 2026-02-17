@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
+// useZoomLevel is a custom hook that provides zoom level functionality
+// this basically focuses on browser zoom level
 export function useZoomLevel() {
     const [zoom, setZoom] = useState(1);
 
@@ -9,7 +11,7 @@ export function useZoomLevel() {
         if (typeof window === 'undefined') return;
 
         const updateZoom = () => {
-            setZoom(window.devicePixelRatio || 1);
+            setZoom(window.devicePixelRatio ?? 1);
         };
 
         // imp: else the production will be different

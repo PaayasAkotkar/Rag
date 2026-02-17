@@ -1,6 +1,6 @@
 import { CSSProperties, ReactElement, cloneElement, useRef, useEffect, useCallback } from 'react'
 
-interface TextGhostWrapperProps {
+interface input {
     children: ReactElement<any>
     text: string
     fontSize?: string
@@ -10,6 +10,8 @@ interface TextGhostWrapperProps {
     containerStyle?: CSSProperties
 }
 
+// TextGhost is a custom component which allows the text to be displayed in a ghost which results in having the ms-note alike functionality
+// it is ai generated
 export function TextGhost({
     children,
     text,
@@ -18,7 +20,7 @@ export function TextGhost({
     padding = '4px',
     maxHeight = 'none',
     containerStyle = {},
-}: TextGhostWrapperProps) {
+}: input) {
     const ghostRef = useRef<HTMLDivElement>(null)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 

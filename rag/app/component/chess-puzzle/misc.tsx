@@ -1,11 +1,10 @@
 
-// --- TYPES ---
 export interface Piece {
     id: string;
     type: string;
     square: string
 }
-
+// fenRecord returns the fen string to current data
 export function fenRecord(fen: string): Record<string, Piece> {
     if (!fen) return {}
 
@@ -38,6 +37,7 @@ export function fenRecord(fen: string): Record<string, Piece> {
     return res
 }
 
+// recordToFen returns the fen record to fen string
 export function recordToFen(record: Record<string, Piece>,
     turn: 'w' | 'b' = 'w',
     halfmove: string = '0',
@@ -85,11 +85,11 @@ export function recordToFen(record: Record<string, Piece>,
 
 }
 
-
+// getPieceUnicode returns the piece unicode
 export const getPieceUnicode = (p: string) => {
     const pieces: Record<string, string> = {
         'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚', 'p': '♟',
         'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔', 'P': '♙'
     };
-    return pieces[p] || '';
+    return pieces[p] ?? '';
 };

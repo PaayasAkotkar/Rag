@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react"
 import { CSSMaths } from "@/app/misc/algorithm"
 import { useZoomLevel } from "@/app/services/zoom/use-zoom"
 import { makeSmallChange } from "@/app/misc/types"
+import { respBaseWidth, respMax, respMin, respZoom } from "@/app/misc/sheet"
 
 interface input {
     write: string
@@ -12,6 +13,43 @@ interface input {
     onWritingComplete?: () => void
     makeSmallChanges?: makeSmallChange
 }
+// Pencil returns a component text typewriter effect
+// honestly speaking rxjs is quite better than NodeJS.Timeout as it saves time for implementation
+// you can play around in rough how the typewriter works
+// these are three ways to do so
+// let text = "life goes on and one"
+// let $i = 0
+
+// const typwriter = setInterval(() => {
+//     $i++;
+//     let g = text.slice(0, $i);
+//     console.log(g);
+
+//     if ($i >= text.length) {
+//         clearInterval(typwriter);
+//     }
+// }, 100);
+
+// let stop = false
+// interval(100).pipe(
+//     takeWhile(() => !stop && $i < text.length),
+//     tap(() => {
+//         $i++
+//         let g = text.slice(0, $i);
+//         console.log(g);
+//     })
+// ).subscribe()
+
+// from(text).pipe(
+//     // concatMap is powerful in this case
+//     // the reason being smiple not going to cancel and restart unlike switch map
+//     // nor even going to start parallel like mergemap
+//     concatMap(char => of(char).pipe(delay(100))),
+//     // scane basically allows accumulation
+//     scan((acc, curr) => acc + curr, "")
+// ).subscribe(typewriter => {
+//     console.log(typewriter);
+// });
 export default function Pencil({
     write,
     startDelay = 100,
@@ -21,72 +59,91 @@ export default function Pencil({
     makeSmallChanges
 }: input) {
     const [text, setText] = useState<string>("")
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-    const currentIndexRef = useRef<number>(0)
-    const isWritingRef = useRef<boolean>(false)
-    const previousWriteRef = useRef<string>("")
+    const _timeout = useRef<NodeJS.Timeout | null>(null)
+    const $i = useRef<number>(0)
+    const isWriting = useRef<boolean>(false)
+    const previousWrite = useRef<string>("")
 
     // stop animation
     useEffect(() => {
-        if (forceStop && isWritingRef.current) {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-                timeoutRef.current = null
+        if (forceStop && isWriting.current) {
+            if (_timeout.current) {
+                clearTimeout(_timeout.current)
+                _timeout.current = null
             }
-            isWritingRef.current = false
+            isWriting.current = false
             onWritingComplete?.()
         }
     }, [forceStop])
 
     // start animation
     useEffect(() => {
-        if (write !== previousWriteRef.current) {
-            previousWriteRef.current = write
+        if (write !== previousWrite.current) {
+            previousWrite.current = write
             setText("")
-            currentIndexRef.current = 0
-            isWritingRef.current = false
+            $i.current = 0
+            isWriting.current = false
 
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-                timeoutRef.current = null
+            if (_timeout.current) {
+                clearTimeout(_timeout.current)
+                _timeout.current = null
             }
         }
 
-        if (forceStop || !write || isWritingRef.current) {
+        if (forceStop || !write || isWriting.current) {
             return
         }
 
         const startWriting = () => {
-            isWritingRef.current = true
+            isWriting.current = true
             onWritingStart?.()
 
+            // alt:
+            // 1. wait for startDelay
+            // timer(startDelay).pipe(
+            //     // 2. switch to the character stream
+            //     concatMap(() => from(write)),
+            //     // 3. add 100ms between each character
+            //     concatMap(char => of(char).pipe(delay(100))),
+            //     // 4. kill it if forceStop becomes true
+            //     takeWhile(() => !forceStop),
+            //     // 5. accumulate the string
+            //     scan((acc, curr) => acc + curr, "")
+            // ).subscribe({
+            //     next: (text) => console.log(text),
+            //     complete: () => console.log("Done!")
+            // });
+
             const writeNextChar = () => {
-                if (currentIndexRef.current < write.length && !forceStop) {
-                    currentIndexRef.current++
-                    setText(write.slice(0, currentIndexRef.current))
-                    timeoutRef.current = setTimeout(writeNextChar, 100)
-                } else if (currentIndexRef.current >= write.length) {
-                    isWritingRef.current = false
+                if ($i.current < write.length && !forceStop) {
+                    $i.current++
+                    setText(write.slice(0, $i.current))
+                    // simple writing
+                    _timeout.current = setTimeout(writeNextChar, 100)
+                } else if ($i.current >= write.length) {
+                    isWriting.current = false
                     onWritingComplete?.()
                 }
             }
-
-            timeoutRef.current = setTimeout(writeNextChar, 100)
+            // text write gap between delay
+            _timeout.current = setTimeout(writeNextChar, 100)
         }
 
-        timeoutRef.current = setTimeout(startWriting, startDelay)
+        // start delay
+        _timeout.current = setTimeout(startWriting, startDelay)
 
         return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-                timeoutRef.current = null
+            if (_timeout.current) {
+                clearTimeout(_timeout.current)
+                _timeout.current = null
             }
         }
     }, [write, forceStop])
 
     const { zoom } = useZoomLevel()
     const counterScale = 1 / zoom
-    const fontSize = CSSMaths.GenerateClamp(makeSmallChanges?.fontSize ?? 100, 1920, 0.90, 'px', counterScale)
+    const fontSize = CSSMaths.GenerateClamp(makeSmallChanges?.fontSize ?? 100, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
+
     // imp for mobile devices else the color will be considered as white
     const textColor = makeSmallChanges?.textColor ?? 'black'
 

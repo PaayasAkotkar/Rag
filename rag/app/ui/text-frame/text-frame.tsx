@@ -1,11 +1,12 @@
 import { CSSMaths } from "@/app/misc/algorithm";
+import { respBaseWidth, respMax, respMin, respZoom } from "@/app/misc/sheet";
 import { useZoomLevel } from "@/app/services/zoom/use-zoom";
 import { motion } from "motion/react";
 
 export default function TextFrame({ children, size }: { children: React.ReactNode, size?: number }) {
     const { zoom } = useZoomLevel()
     const counterScale = 1 / zoom
-    const _size = CSSMaths.GenerateClamp(size ?? 300, 1920, 0.90, 'px', counterScale)
+    const _size = CSSMaths.GenerateClamp(size ?? 300, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
     return (<>
         <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -24,7 +25,7 @@ export default function TextFrame({ children, size }: { children: React.ReactNod
                 },
             }}
             style={{ width: _size ?? '50%' }}
-            className=' h-fit flex flex-col overflow-hidden items-end rounded-[25px]  bg-yellow1'
+            className=' h-fit flex flex-col overflow-hidden items-end rounded-[25px] bg-yellow1'
         >
             {children}
         </motion.div>

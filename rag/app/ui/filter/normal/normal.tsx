@@ -1,7 +1,8 @@
 'use client'
 import { colorPallete } from "@/app/misc/color-pallete"
 import { animate, createTimeline } from "animejs"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
+
 // NormalFilter returns the filter of divs that are animated to create a normal filter effect
 // @Tip: always use this as naked also for if else filter
 interface input {

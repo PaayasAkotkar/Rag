@@ -19,7 +19,6 @@ interface MutationReply {
     msg: string;
 }
 
-// Hook for initializing puzzles with a query
 export function useInitPuzzles(input: PuzzleInput) {
 
     const { data, loading, error, refetch } = useQuery<
@@ -38,7 +37,6 @@ export function useInitPuzzles(input: PuzzleInput) {
     };
 }
 
-// Hook for triggering puzzle fetch via mutation
 export function useGetPuzzles() {
     const [getPuzzles, { data, loading, error }] = useMutation<
         { getPuzzles: MutationReply },
@@ -63,7 +61,6 @@ export function useGetPuzzles() {
     };
 }
 
-// Hook for subscribing to latest puzzles
 export function useLatestPuzzles(input: PuzzleInput) {
     const { data, loading, error } = useSubscription<
         { latestPuzzles: Puzzle[] },
@@ -79,20 +76,15 @@ export function useLatestPuzzles(input: PuzzleInput) {
     };
 }
 
-// Combined hook for full chess puzzle workflow
 export default function useChessGraphql(room: string, limit: number = 5) {
     const input: PuzzleInput = { room, limit };
 
-    // Initialize puzzles on mount
     const { puzzles: initialPuzzles, loading: initLoading, error: initError, refetch } = useInitPuzzles(input);
 
-    // Mutation to trigger new puzzle fetch
     const { fetchPuzzles, loading: fetchLoading, error: fetchError, message } = useGetPuzzles();
 
-    // Subscribe to latest puzzles
     const { latestPuzzles, loading: subLoading, error: subError } = useLatestPuzzles(input);
 
-    // Combine initial and latest puzzles, preferring latest if available
     const puzzles = latestPuzzles.length > 0 ? latestPuzzles : initialPuzzles;
 
     const requestNewPuzzles = async () => {
@@ -101,8 +93,8 @@ export default function useChessGraphql(room: string, limit: number = 5) {
 
     return {
         puzzles,
-        loading: initLoading || fetchLoading || subLoading,
-        error: initError || fetchError || subError,
+        loading: initLoading ?? fetchLoading ?? subLoading,
+        error: initError ?? fetchError ?? subError,
         requestNewPuzzles,
         refetch,
         message,

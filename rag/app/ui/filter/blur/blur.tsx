@@ -2,6 +2,7 @@
 import { colorPallete } from "@/app/misc/color-pallete"
 import { animate, createTimeline } from "animejs"
 import { useEffect, useRef, useState } from "react"
+
 interface input {
     tricolor?: { right: string, mid: string, left: string },
     triggerAnimation: boolean
@@ -72,7 +73,7 @@ export default function BlurFilter({ blurCap, tricolor, triggerAnimation, onComp
         }
     }, [click])
 
-    const blurCapacity = blurCap || "60px"
+    const blurCapacity = blurCap ?? "60px"
 
     return (
         <div className="w-full h-full">

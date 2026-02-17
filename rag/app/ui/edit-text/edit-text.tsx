@@ -13,7 +13,6 @@ interface input {
     defaultValue?: string
     makeSmallChange?: makeSmallChange
 }
-
 export default function EditTextArea({
     get,
     defaultValue,
@@ -36,7 +35,6 @@ export default function EditTextArea({
     const eraseText = () => {
         get?.(defaultValue ?? "", true)
     }
-
 
     useEffect(() => {
         const eraseEvent = (ev: KeyboardEvent) => {
