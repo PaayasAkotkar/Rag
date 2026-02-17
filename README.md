@@ -5,7 +5,7 @@ A full-stack application combining AI-powered Retrieval Augmented Generation.The
 
 ## Motivation
 <p> This is coded in-order to understand the basic of Rag system tho it doesn't have the vector db but still it depicts how to write the prompt and understand the workflow.
-The reason behind using Graphql is simple because adapts the perfect pubsub system and no need to worry about go coroutine and more or like easy to understand.</p>
+The reason behind using Graphql is simple because it adapts the perfect pubsub system and no need to worry about go coroutine and more or like easy to understand.</p>
 
 ## Project Overview
 
