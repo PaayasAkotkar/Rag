@@ -70,11 +70,11 @@ func cleanJSONResponse(text string) string {
 //  2. gefine the flow
 //  3. build your prompt
 //     prompt pattern:
-//     a. greeting
+//     a. desc or theme
 //     b. guideline
 //     c. struct field usage
 //     d. disclaimer
-//     e. example for better ai understanding
+//     e. example for better results
 //
 // honeslty speaking promp is better than using the define flow struct
 // 4. unmarhsall it
