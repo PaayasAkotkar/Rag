@@ -1,8 +1,7 @@
 # project: RAG Model - Chess Coaching System
 # date: Feb-10-2026 - Feb-16-2026
 
-<<<<<<< HEAD
-A full-stack application combining AI-powered Retrieval Augmented Generation.The system provides an interactive chess coaching platform with real-time puzzle generation, analysis.
+A full-stack application combining AI-powered Retrieval Augmented Generation.The system provides an interactive chess coaching platform with real-time puzzle generation, analysis model.
 
 ## Motivation
 <p> This is coded in-order to understand the basic of Rag system tho it doesn't have the vector db but still it depicts how to write the prompt and understand the workflow.
@@ -103,48 +102,3 @@ On the **first run** of the Go backend, the system will automatically:
 - **Pub/Sub Messaging**: Real-time updates via subscriptions
 - **Chess Engine**: Puzzle processing & filtering
 - **Firebase Genkit Integration**: AI-powered coaching responses
-
-## Troubleshooting
-
-### ❌ Error: "chess_puzzles folder not found"
-
-**Solution**:
-```bash
-mkdir -p chess/chess_puzzles
-```
-
-### ❌ Error: "puzzle_db1.csv not found" or "CSV parser error"
-
-**Solutions**:
-1. Verify file exists: `chess/chess_puzzles/puzzle_db1.csv`
-2. Check file is readable and not corrupted
-3. Verify CSV format matches specification (7 columns with headers)
-4. Download fresh copy from https://database.lichess.org/#puzzles
-
-### ❌ Error: "SQLite database initialization failed"
-
-**Solutions**:
-1. Delete any corrupted `chess_puzzleDB1.db` file
-2. Re-run the backend - it will recreate the database
-3. Check disk space (Lichess database requires ~2GB for import)
-4. Verify `puzzle_db1.csv` has correct permissions
-
-### ❌ "Too many open files" error
-
-**Solution**:
-- Backend is using too much memory during CSV import
-- Increase OS file handle limits or reduce batch size in `chess/chess.go`
-
-**TODOS**
-- frontend Create Resp for the Chess Puzzle component
-- backend Extract and pass the stock evaluations to eval bar
-
-**Last Updated**: February 16, 2026
-**Version**: 0.1.0
-**Status**: Active Development
-=======
-index:
-      1. rag -frontend-folder
-      2. server -backend-folder-chess-coach-rag-model
-      3. chess -backend-folder-chess-puzzle-model
->>>>>>> 95af60d6aeb9994df0b90676aadb8f164cf9ee21
