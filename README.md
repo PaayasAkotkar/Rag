@@ -4,7 +4,7 @@
 A full-stack application combining AI-powered Retrieval Augmented Generation.The system provides an interactive chess coaching platform with real-time puzzle generation, analysis model.
 
 ## Motivation
-<p> This is coded in-order to understand the basic of Rag system tho it doesn't have the vector db but still it depicts how to write the prompt and understand the workflow.
+<p> This is coded in-order to understand the basic of Rag system.
 The reason behind using Graphql is simple because it adapts the perfect pubsub system and no need to worry about go coroutine and more or like easy to understand.</p>
 
 ## Project Overview
@@ -12,7 +12,6 @@ The reason behind using Graphql is simple because it adapts the perfect pubsub s
 **RAG Model** is a modern web application built with:
 - **Backend**: Go with GraphQL API and WebSocket support
 - **Frontend**: Next.js 16 with React 19 and TypeScript
-- **Database**: SQLite with chess puzzle database
 - **Real-time**: Pub/Sub architecture for live updates
 
 ## Project Structure
