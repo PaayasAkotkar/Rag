@@ -26,7 +26,7 @@ rag-model/
 │   └── chess_puzzles/         # CSV data folder (REQUIRED - must create)
 │       └── puzzle_db1.csv     # Chess puzzle dataset
 │
-├── server/                     # Main RAG GraphQL server
+├── server/                    # Main RAG GraphQL server
 │   ├── server.go              # Server initialization & HTTP setup
 │   ├── service.go             # Graphql Schema
 _   |── rag.go                 # Gemini-Setup
@@ -34,7 +34,7 @@ _   |── rag.go                 # Gemini-Setup
 │   ├── graph/                 # RAG GraphQL schema & resolvers
 │   └── env.go                 # Environment configuration
 │
-├── rag/                        # Next.js Frontend
+├── rag/                       # Next.js Frontend
 │   ├── app/
 │   │   ├── component/         # React components (Chess, Chat, Puzzles)
 │   │   ├── services/          # GraphQL clients & API calls
