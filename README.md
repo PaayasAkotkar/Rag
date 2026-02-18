@@ -3,33 +3,6 @@
 
 A full-stack application combining AI-powered Retrieval Augmented Generation.The system provides an interactive chess coaching platform with real-time puzzle generation, analysis model.
 
-## Quick Start with Docker (Recommended)
-
-The easiest way to view the project is using Docker Compose. This will set up the vector database, the Go backend, and the Next.js frontend automatically.
-
-### 1. Configure Environment
-Create a `.env` file from the example:
-```bash
-cp .env.example .env
-```
-Open `.env` and add your **Gemini API Key** to the `ENV` field.
-
-### Option 1: Docker Compose (Best for development)
-```bash
-docker-compose up --build
-```
-
-### Option 2: Single Docker Image (Unified)
-If you prefer a single container running everything:
-```bash
-docker build -t rag-chess-app .
-docker run -p 3000:3000 -p 8080:8080 --env-file .env rag-chess-app
-```
-
-- **Frontend**: [http://localhost:3000](http://localhost:3000)
-- **Backend API**: [http://localhost:8080/query](http://localhost:8080/query)
-- **Playground**: [http://localhost:8080/](http://localhost:8080/)
-
 ## Project Overview
 
 **RAG Model** is a modern web application built with:
