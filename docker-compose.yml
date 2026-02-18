@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: ankane/pgvector:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_name
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DBURL=host=db port=5432 user=postgres password=password dbname=db_name sslmode=disable
+    depends_on:
+      - db
+    restart: always
+
+  frontend:
+    build:
+      context: ./rag
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8080/query
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  pgdata:
