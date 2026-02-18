@@ -47,4 +47,4 @@ _   |── rag.go                 # Gemini-Setup
 ├── go.mod                      # Go module dependencies
 ```
 ## NOTE
-chess folder and chess puzzle in the rag folder is a side project but you can play with for that you can download the puzzle db from the lichess (https://database.lichess.org/#puzzles).
+chess folder and chess puzzle in the rag folder is a side project but you can play with for that you can download the puzzle db from the lichess (https://database.lichess.org/#puzzles) and place it in the chess folder /chess_puzzles and name the csv file to puzzle_db1.csv.
