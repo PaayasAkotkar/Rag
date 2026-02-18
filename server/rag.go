@@ -81,11 +81,57 @@ func cleanJSONResponse(text string) string {
 	return text
 }
 
+<<<<<<< HEAD
 // ai generated
 func embedText(ctx context.Context, em ai.Embedder, text string) ([]float32, error) {
 	res, err := em.Embed(ctx, &ai.EmbedRequest{
 		Input: []*ai.Document{
 			ai.DocumentFromText(text, nil),
+=======
+// AskChessCoach returns the reply of the ai
+// genKit is qite powerful and easy to learn
+// pattern:
+//  1. copy paste the init stuff and do some chages
+//  2. gefine the flow
+//  3. build your prompt
+//     prompt pattern:
+//     a. desc or theme
+//     b. guideline
+//     c. struct field usage
+//     d. disclaimer
+//     e. example for better results
+//
+// honeslty speaking promp is better than using the define flow struct
+// 4. unmarhsall it
+func AskChessCoach(student *model.ChessStudentRequest) *model.OnChessCoachReply {
+	ctx := context.Background()
+
+	g := genkit.Init(ctx,
+		genkit.WithPlugins(&googlegenai.GoogleAI{APIKey: ENV}),
+		genkit.WithDefaultModel(MODEL),
+	)
+
+	chessCoachFlow := genkit.DefineFlow(g, "chessCoachFlow",
+		func(ctx context.Context, input *model.ChessStudentRequest) (*model.OnChessCoachReply, error) {
+			prompt := BuildChessPrompt(input)
+
+			resp, err := genkit.Generate(ctx, g,
+				ai.WithPrompt(prompt),
+			)
+			if err != nil {
+				return nil, fmt.Errorf("failed to generate chess coaching: %w", err)
+			}
+
+			responseText := resp.Text()
+			cleanedJSON := cleanJSONResponse(responseText)
+
+			var coach model.OnChessCoachReply
+			if err := json.Unmarshal([]byte(cleanedJSON), &coach); err != nil {
+				return nil, fmt.Errorf("failed to parse AI response: %w\nResponse: %s", err, cleanedJSON)
+			}
+
+			return &coach, nil
+>>>>>>> c63f03e8b15dd0a910de7056826cbc98004bbd65
 		},
 	})
 	if err != nil {

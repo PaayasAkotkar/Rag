@@ -2,6 +2,13 @@
 # date: Feb-10-2026 - Feb-16-2026
 
 A full-stack application combining AI-powered Retrieval Augmented Generation.The system provides an interactive chess coaching platform with real-time puzzle generation, analysis model.
+<<<<<<< HEAD
+=======
+
+## Motivation
+<p> This is coded in-order to understand the basic of Rag system tho it doesn't have the vector db but still it depicts how to write the prompt and understand the workflow.
+The reason behind using Graphql is simple because it adapts the perfect pubsub system and no need to worry about go coroutine and more or like easy to understand.</p>
+>>>>>>> c63f03e8b15dd0a910de7056826cbc98004bbd65
 
 ## Project Overview
 
