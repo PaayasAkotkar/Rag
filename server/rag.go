@@ -97,6 +97,8 @@ func embedText(ctx context.Context, em ai.Embedder, text string) ([]float32, err
 	return res.Embeddings[0].Embedding, nil
 }
 
+// end
+
 var (
 	chessCoachFlow func(context.Context, *model.ChessStudentRequest) (*model.OnChessCoachReply, error)
 	flowOnce       sync.Once
