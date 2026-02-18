@@ -7,6 +7,7 @@ import BlurFilter from "@/app/ui/filter/blur/blur"
 import { CSSMaths } from "@/app/misc/algorithm"
 import { useZoomLevel } from "@/app/services/zoom/use-zoom"
 import { respBaseWidth, respMax, respMin, respZoom } from "@/app/misc/sheet"
+
 interface input {
     src?: string,
     title?: string,

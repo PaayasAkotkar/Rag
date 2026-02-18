@@ -7,6 +7,7 @@ import SquarePostComposorButton from "../buttons/post-composor-buttons/square-po
 import Pencil from "../pencil/pencil"
 import { ChessCoachMiscItems } from "@/app/services/rag-graphql/operation"
 import MiscBackground from "./copy"
+import { useState } from "react"
 import { makeSmallChange } from "@/app/misc/types"
 import { useDevice } from "@/app/services/device/use-device"
 import { respBaseWidth, respMax, respMin, respZoom } from "@/app/misc/sheet"
@@ -21,13 +22,14 @@ interface input {
 export default function MiscItem({ makeSmallChanges, startDelay, misc, forceStop = false }: input) {
     const { copy, isCopied } = useCopy()
     const _copy = isCopied ? 'copied' : 'copy'
+    const [isCopyReady, setIsCopyReady] = useState(false)
+    const [isLinkReady, setIsLinkReady] = useState(false)
 
     const { zoom } = useZoomLevel()
     const counterScale = 1 / zoom
     const { device } = useDevice()
 
     const fontSize = CSSMaths.GenerateClamp(makeSmallChanges?.fontSize ?? 100, respBaseWidth, respZoom, 'px', counterScale, respMin, respMax)
-
 
     return (
         <div className="w-full max-w-full p-2">
@@ -61,11 +63,16 @@ export default function MiscItem({ makeSmallChanges, startDelay, misc, forceStop
                             makeSmallChanges={makeSmallChanges}
                             write={misc.copy}
                             forceStop={forceStop}
+                            onWritingComplete={() => setIsCopyReady(true)}
                         />
                         <SquarePostComposorButton
                             makeSmallChanges={makeSmallChanges}
                             title={_copy}
-                            node={{ onClick: () => copy(misc.copy ?? "") }}
+                            node={{
+                                onClick: () => copy(misc.copy ?? ""),
+                                disabled: !isCopyReady,
+                                style: { opacity: isCopyReady ? 1 : 0.5 }
+                            }}
                         />
                     </div>
                 </MiscBackground>
@@ -74,12 +81,14 @@ export default function MiscItem({ makeSmallChanges, startDelay, misc, forceStop
             {misc.isLink && misc.link && (
                 <MiscBackground>
                     <a
-                        href={misc.link}
+                        href={isLinkReady ? misc.link : '#'}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => !isLinkReady && e.preventDefault()}
                         style={{
                             fontSize: fontSize,
-                            color: colorPallete.$blue_pallete.blue3
+                            color: isLinkReady ? colorPallete.$blue_pallete.blue3 : 'gray',
+                            cursor: isLinkReady ? 'pointer' : 'default'
                         }}
                         className="underline underline-offset-4 decoration-[1.1px]"
                     >
@@ -88,6 +97,7 @@ export default function MiscItem({ makeSmallChanges, startDelay, misc, forceStop
                             makeSmallChanges={makeSmallChanges}
                             write={misc.link}
                             forceStop={forceStop}
+                            onWritingComplete={() => setIsLinkReady(true)}
                         />
                     </a>
                 </MiscBackground>

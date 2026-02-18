@@ -15,6 +15,8 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/firebase/genkit/go/genkit"
+	"github.com/firebase/genkit/go/plugins/googlegenai"
 	"github.com/go-chi/cors"
 	"github.com/gorilla/websocket"
 	"github.com/vektah/gqlparser/v2/ast"
@@ -28,8 +30,31 @@ func Server() {
 		port = defaultPort
 	}
 
+	ctx := context.Background()
+	g := genkit.Init(ctx,
+		genkit.WithPlugins(&googlegenai.GoogleAI{APIKey: ENV}),
+		genkit.WithDefaultModel(MODEL),
+	)
+
+	store, err := NewRAGStore(DBURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := store.InitSchema(ctx); err != nil {
+		log.Fatal(err)
+	}
+
+	// Register flows once
+	InitFlows(g, store)
+
+	resolver := &RagResolver{
+		store:  store,
+		pubsub: InitPubSub(),
+		g:      g,
+	}
+
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{
-		Resolvers: &RagResolver{},
+		Resolvers: resolver,
 	}))
 
 	srv.AddTransport(transport.Options{})
@@ -76,17 +101,18 @@ func Server() {
 		}
 	}()
 
-	// this is done so that you can quite the terminal easily
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-	<-quit
-	log.Println("Shutting down server...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	sig := <-quit
+	log.Printf("Received signal: %v, initiating graceful shutdown...", sig)
+
+	_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
 	if err := server.Shutdown(ctx); err != nil {
-		log.Fatal("Server forced to shutdown: ", err)
+		log.Fatalf("Graceful shutdown failed: %v — forcing exit", err)
 	}
 
-	log.Println("Server exiting")
+	log.Println("Server exited cleanly")
 }

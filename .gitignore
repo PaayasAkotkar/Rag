@@ -1,12 +1,20 @@
 .vscode
-chess_puzzleDB1.db
-chess_puzzleDB1.sqbpro
 app.exe
-go.mod
-go.sum
+app
 
-chess/chess_puzzles/*.csv
-chess/chess_puzzles
+# Go
+# go.mod and go.sum should be in git
+!go.mod
+!go.sum
+
+# Data
+*.db
+*.sqlite
+*.sqlite3
+*.sqbpro
+
+# Keep the CSV but ignore other puzzle assets if any
+!chess/chess_puzzles/puzzle_db1.csv
 
 rag/node_modules
 rag/node_modules/**

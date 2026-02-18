@@ -7,21 +7,32 @@ import (
 	"app/server/graph/model"
 	"context"
 	"log"
+
+	"github.com/firebase/genkit/go/genkit"
 )
 
-type RagResolver struct{}
+type RagResolver struct {
+	store  *RAGStore
+	pubsub *PubSub
+	g      *genkit.Genkit
+}
+
 type RagService struct{ *RagResolver }
 
 func (r *RagResolver) AskChessCoach(ctx context.Context, input *model.ChessStudentRequest) (*model.ChessCoachPayload, error) {
 	log.Println("RAG request made...")
-	// magic of pubsub
-	coach := AskChessCoach(input)
-	pubsub.Broadcast(*input.ID, coach)
+
+	coach, err := AskChessCoach(ctx, input, r.store, r.g)
+	if err != nil {
+		return nil, err
+	}
+
+	r.pubsub.Broadcast(*input.ID, coach)
+
 	status := int32(200)
 	msg := "coaching thinking..."
 	return &model.ChessCoachPayload{Status: &status, Message: &msg}, nil
 }
-
 func (r *RagResolver) InitCoachSuggestions(ctx context.Context, input *model.ChessStudentRequest) ([]*model.OnChessCoachReply, error) {
 	log.Println("Rag init request made...")
 	return []*model.OnChessCoachReply{}, nil
@@ -29,10 +40,10 @@ func (r *RagResolver) InitCoachSuggestions(ctx context.Context, input *model.Che
 
 func (r *RagResolver) ChessCoachReply(ctx context.Context, input *model.ChessStudentRequest) (<-chan *model.OnChessCoachReply, error) {
 	log.Println("live update request triggered...")
-	ch := pubsub.Subscribe(*input.ID)
+	ch := r.pubsub.Subscribe(*input.ID)
 	go func() {
 		<-ctx.Done()
-		pubsub.Unsubscribe(*input.ID, ch)
+		r.pubsub.Unsubscribe(*input.ID, ch)
 	}()
 	return ch, nil
 }

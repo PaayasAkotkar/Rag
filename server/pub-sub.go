@@ -1,7 +1,7 @@
-// this is my end of territory
+// this is my end territory
 // its simple to learn
-// information & tip:
-// pub-sub system doesnt act like get & post it just get function that saves so much of implementation
+// tip:
+// pub-sub system doesnt act like get & post it just a get method that saves so much of implementation
 package server
 
 import (

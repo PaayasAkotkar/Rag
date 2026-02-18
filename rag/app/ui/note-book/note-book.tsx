@@ -29,16 +29,21 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
     const [history, setHistory] = useState<({ type: 'user', content: string } | { type: 'coach', content: OnChessCoachReply })[]>([])
     const [closedNotes, setClosedNotes] = useState<Set<number>>(new Set())
     const [stoppedWriters, setStoppedWriters] = useState<Set<number>>(new Set())
-    const [isWriting, setIsWriting] = useState<{ [key: number]: boolean }>({})
     const [isClosed, setIsClosed] = useState<Record<number, IsClose>>({})
 
     useEffect(() => {
         if (userNote) {
+            // Stop all current writers when a new request is made
             setHistory(prev => {
-                if (prev == null)
-                    return [{ type: 'user', content: userNote }]
-                return [...prev, { type: 'user', content: userNote }]
-            })
+                const newHistory = prev || [];
+                // Add current indices to stoppedWriters
+                setStoppedWriters(stopped => {
+                    const next = new Set(stopped);
+                    newHistory.forEach((_, i) => next.add(i));
+                    return next;
+                });
+                return [...newHistory, { type: 'user', content: userNote }];
+            });
         }
     }, [userNote])
 
@@ -70,23 +75,11 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
                 return newSet
             })
         } else {
-
+            // Force stop writing when closing
             const nextIndex = index + 1
-            const isNextWriting = history[nextIndex] && history[nextIndex].type === 'coach' && isWriting[nextIndex]
+            handleStopWriting(index)
 
-            if (isNextWriting) {
-                handleStopWriting(index)
-                setTimeout(() => {
-                    setIsClosed(prev => ({
-                        ...prev,
-                        [index]: { isClose: true, Index: index }
-                    }))
-                    setClosedNotes(prev => new Set(prev).add(index))
-                    if (history[nextIndex] && history[nextIndex].type === 'coach') {
-                        setClosedNotes(prev => new Set(prev).add(nextIndex))
-                    }
-                }, 100)
-            } else {
+            setTimeout(() => {
                 setIsClosed(prev => ({
                     ...prev,
                     [index]: { isClose: true, Index: index }
@@ -95,28 +88,19 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
                 if (history[nextIndex] && history[nextIndex].type === 'coach') {
                     setClosedNotes(prev => new Set(prev).add(nextIndex))
                 }
-            }
+            }, 100)
         }
     }
 
     const handleStopWriting = (index: number) => {
-        setStoppedWriters(prev => new Set(prev).add(index))
-        setIsWriting(prev => ({ ...prev, [index]: false }))
-
-        if (history[index + 1] && history[index + 1].type === 'coach') {
-            setStoppedWriters(prev => new Set(prev).add(index + 1))
-            setIsWriting(prev => ({ ...prev, [index + 1]: false }))
-        }
+        setStoppedWriters(prev => {
+            const next = new Set(prev)
+            next.add(index)
+            // Also stop the coach reply which is index + 1
+            next.add(index + 1)
+            return next
+        })
     }
-
-    const handleWritingStart = (index: number) => {
-        setIsWriting(prev => ({ ...prev, [index]: true }))
-    }
-
-    const handleWritingComplete = (index: number) => {
-        setIsWriting(prev => ({ ...prev, [index]: false }))
-    }
-
     const { zoom } = useZoomLevel()
     const counterScale = 1 / zoom
     const { device } = useDevice()
@@ -173,8 +157,6 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
                                                 startDelay={50}
                                                 note={note.information}
                                                 forceStop={shouldStop}
-                                                onWritingStart={() => handleWritingStart(index)}
-                                                onWritingComplete={() => handleWritingComplete(index)}
                                             />
                                         </div>
                                     }
@@ -186,8 +168,6 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
                                                 startDelay={70}
                                                 note={note.suggestion}
                                                 forceStop={shouldStop}
-                                                onWritingStart={() => handleWritingStart(index)}
-                                                onWritingComplete={() => handleWritingComplete(index)}
                                             />
                                         </div>
                                     }
@@ -199,8 +179,6 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
                                                 startDelay={80}
                                                 note={note.bestPractice}
                                                 forceStop={shouldStop}
-                                                onWritingStart={() => handleWritingStart(index)}
-                                                onWritingComplete={() => handleWritingComplete(index)}
                                             />
                                         </div>
                                     }
@@ -212,8 +190,6 @@ export default function NoteBook({ makeFrameSmallChange, userNote, note, onReask
                                                 startDelay={90}
                                                 note={{ miscItems: note.miscItems }}
                                                 forceStop={shouldStop}
-                                                onWritingStart={() => handleWritingStart(index)}
-                                                onWritingComplete={() => handleWritingComplete(index)}
                                             />
                                         </div>
                                     }
